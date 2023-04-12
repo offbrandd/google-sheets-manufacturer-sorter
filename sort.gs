@@ -2,7 +2,7 @@
   //SortByManufacturer();
 }
   
-  function Sort() {
+  function sort() {
 
     var activeSpreadsheet = SpreadsheetApp.getActiveSpreadsheet();
     var data=activeSpreadsheet.getSheetByName("Source").getDataRange().getValues();
