@@ -2,7 +2,7 @@
   //SortByManufacturer();
 }
   
-  function SortByManufacturer() {
+  function Sort() {
 
     var activeSpreadsheet = SpreadsheetApp.getActiveSpreadsheet();
     var data=activeSpreadsheet.getSheetByName("Source").getDataRange().getValues();
@@ -72,3 +72,5 @@ function GetNameCol(data) {
   }
   return -1
 }
+
+
