@@ -6,22 +6,20 @@ const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Source");
 function trimAndPrune() {
   trim();
   prune();
-  sheet.protect();
 }
 function prune() {
   var data=sheet.getDataRange().getValues();
   var modelCol = GetColByName(data[0], "name");
   var locationCol = GetColByName(data[0], "location");
   var length = data.length;
+  var amountDeleted = 0;
 
   for (var i=0;i < length; i++) {
     var model = data[i][modelCol];
     var location = data[i][locationCol];
     if (isLocationDeletable(location) || isModelDeletable(model)) {
-      sheet.deleteRow(i + 1);
-      i--;
-      data=sheet.getDataRange().getValues();
-      length = data.length;
+      sheet.deleteRow(i + 1 - amountDeleted);
+      amountDeleted++;
     }
   }
 }
@@ -69,12 +67,12 @@ function GetColByName(data, name) {
 function trim() {
   var data=sheet.getDataRange().getValues();
   var length = data[0].length;
+  var deletedColumns = 0;
   for(var i=0; i< length;i++) {
     if(isColumnDeletable(data[0][i])) {
-      sheet.deleteColumn(i+1);
-      i -= 1;
+      sheet.deleteColumn(i+1 - deletedColumns);
+      deletedColumns++;
       length = data[0].length;
-      data = sheet.getDataRange().getValues();
     }
   }
 }
