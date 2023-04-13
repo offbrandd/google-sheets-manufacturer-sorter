@@ -1,65 +1,26 @@
-  function onEdit(e) {
-  //SortByManufacturer();
-}
+  var appleList = [];
+  var dellList = [];
+  var hpList = [];
+  var lenovoList = [];
+  var microsoftList = [];
+  var acerList = [];
+  var otherList = [];
+
+
+  var activeSpreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = activeSpreadsheet.getSheetByName("Source");
+  var data=sheet.getDataRange().getValues();
+
+  var appleSheet = InsertNewSheet(data, activeSpreadsheet, "Apple");
+  var dellSheet = InsertNewSheet(data, activeSpreadsheet, "Dell");
+  var hpSheet = InsertNewSheet(data, activeSpreadsheet, "HP");
+  var lenovoSheet = InsertNewSheet(data, activeSpreadsheet, "Lenovo");
+  var microsoftSheet = InsertNewSheet(data, activeSpreadsheet, "Microsoft");
+  var acerSheet = InsertNewSheet(data, activeSpreadsheet, "Acer");
+  var otherSheet = InsertNewSheet(data, activeSpreadsheet, "Other");
+
   
-  function sort() {
-
-    var activeSpreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-    var sheet = activeSpreadsheet.getSheetByName("Source");
-    var data=sheet.getDataRange().getValues();
-
-    var appleSheet = InsertNewSheet(data, activeSpreadsheet, "Apple");
-    var appleList = [];
-    var dellSheet = InsertNewSheet(data, activeSpreadsheet, "Dell");
-    var dellList = [];
-    var hpSheet = InsertNewSheet(data, activeSpreadsheet, "HP");
-    var hpList = [];
-    var lenovoSheet = InsertNewSheet(data, activeSpreadsheet, "Lenovo");
-    var lenovoList = [];
-    var microsoftSheet = InsertNewSheet(data, activeSpreadsheet, "Microsoft");
-    var microsoftList = [];
-    var acerSheet = InsertNewSheet(data, activeSpreadsheet, "Acer");
-    var acerList = [];
-    var otherSheet = InsertNewSheet(data, activeSpreadsheet, "Other");
-    var otherList = [];
-
-    nameCol = GetNameCol(data[0]);
-    for(var i=1;i<data.length;i++)
-    {
-      //Grabs asset name using column number we found earlier
-      var Name=data[i][nameCol];
-      var row = data[i];
-      if (Name.indexOf("Apple") != -1){
-        //appleSheet.appendRow(row);
-        appleList.push(row);
-      }
-      else if (Name.indexOf("Dell") != -1 || Name.indexOf("Alienware") != -1) {
-        //dellSheet.appendRow(row);
-        dellList.push(row);
-      }
-      else if (Name.indexOf("HP") != -1) {
-        //hpSheet.appendRow(row);
-        hpList.push(row);
-      }
-      else if (Name.indexOf("Lenovo") != -1) {
-        //lenovoSheet.appendRow(row);
-        lenovoList.push(row);
-      }
-      else if (Name.indexOf("Microsoft") != -1) {
-        //microsoftSheet.appendRow(row);
-        microsoftList.push(row);
-
-      }
-      else if (Name.indexOf("Acer") != -1) {
-        //acerSheet.appendRow(row);
-        acerList.push(row);
-      }
-      else {
-        //otherSheet.appendRow(row);
-        otherList.push(row);
-      }
-      i++;
-    }
+  function writeListToSheet() {
     if(appleList.length > 0) {
       var range = appleSheet.getRange(2,1,appleList.length, appleList[0].length);
       range.setValues(appleList);
@@ -98,6 +59,31 @@
     otherSheet.protect();
 }
 
+function addToList(name, row) {
+  if (name.indexOf("Apple") != -1) {
+          appleList.push(row);
+  }
+  else if (name.indexOf("Dell") != -1 || name.indexOf("Alienware") != -1) {
+    dellList.push(row);
+  }
+  else if (name.indexOf("HP") != -1) {
+    hpList.push(row);
+  }
+  else if (name.indexOf("Lenovo") != -1) {
+    lenovoList.push(row);
+  }
+  else if (name.indexOf("Microsoft") != -1) {
+    microsoftList.push(row);
+
+  }
+  else if (name.indexOf("Acer") != -1) {
+    acerList.push(row);
+  }
+  else {
+    otherList.push(row);
+  }
+}
+
 function InsertNewSheet(data, activeSpreadsheet, name) {
   var newSheet = activeSpreadsheet.getSheetByName(name);
     if (newSheet != null) {
@@ -109,15 +95,6 @@ function InsertNewSheet(data, activeSpreadsheet, name) {
     }
     newSheet.appendRow(data[0]);
     return newSheet;
-}
-
-function GetNameCol(data) {
-  for(var i = 0; i < data.length; i++) {
-    if(data[i] == "name") {
-      return i;
-    }
-  }
-  return -1
 }
 
 
