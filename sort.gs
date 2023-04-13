@@ -1,3 +1,4 @@
+  //define arrays for each MFG sheet
   var appleList = [];
   var dellList = [];
   var hpList = [];
@@ -6,11 +7,7 @@
   var acerList = [];
   var otherList = [];
 
-
-  var activeSpreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-  var sheet = activeSpreadsheet.getSheetByName("Source");
-  var data=sheet.getDataRange().getValues();
-
+  //define MFG sheets if not already made. If already exists, clears them.
   var appleSheet = InsertNewSheet(data, activeSpreadsheet, "Apple");
   var dellSheet = InsertNewSheet(data, activeSpreadsheet, "Dell");
   var hpSheet = InsertNewSheet(data, activeSpreadsheet, "HP");
@@ -19,8 +16,39 @@
   var acerSheet = InsertNewSheet(data, activeSpreadsheet, "Acer");
   var otherSheet = InsertNewSheet(data, activeSpreadsheet, "Other");
 
-  
-  function writeListToSheet() {
+  //pulls main sheet into an array, in this case "Source". Name of sheet MUST match in Google Sheets
+  var activeSpreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = activeSpreadsheet.getSheetByName("Source");
+  var data=sheet.getDataRange().getValues();
+
+  //given a model name/number and a row of data, assign row of data to corresponding MFG array
+  function addToList(name, row) {
+    if (name.indexOf("Apple") != -1) {
+            appleList.push(row);
+    }
+    else if (name.indexOf("Dell") != -1 || name.indexOf("Alienware") != -1) {
+      dellList.push(row);
+    }
+    else if (name.indexOf("HP") != -1) {
+      hpList.push(row);
+    }
+    else if (name.indexOf("Lenovo") != -1) {
+      lenovoList.push(row);
+    }
+    else if (name.indexOf("Microsoft") != -1) {
+      microsoftList.push(row);
+
+    }
+    else if (name.indexOf("Acer") != -1) {
+      acerList.push(row);
+    }
+    else {
+      otherList.push(row);
+    }
+}
+  //Once sorting into arrays is done, writes array in batch to corresponding Sheet
+  //Note it specifically ignore this first row. This is the header row and is handled on Sheet creation.
+  function writeModelListToSheets() {
     if(appleList.length > 0) {
       var range = appleSheet.getRange(2,1,appleList.length, appleList[0].length);
       range.setValues(appleList);
@@ -59,31 +87,9 @@
     otherSheet.protect();
 }
 
-function addToList(name, row) {
-  if (name.indexOf("Apple") != -1) {
-          appleList.push(row);
-  }
-  else if (name.indexOf("Dell") != -1 || name.indexOf("Alienware") != -1) {
-    dellList.push(row);
-  }
-  else if (name.indexOf("HP") != -1) {
-    hpList.push(row);
-  }
-  else if (name.indexOf("Lenovo") != -1) {
-    lenovoList.push(row);
-  }
-  else if (name.indexOf("Microsoft") != -1) {
-    microsoftList.push(row);
-
-  }
-  else if (name.indexOf("Acer") != -1) {
-    acerList.push(row);
-  }
-  else {
-    otherList.push(row);
-  }
-}
-
+//given an array from source sheet, the entire Spreadsheet, and a name: checks if given sheet already exists
+//if exists, clears and sets up to receive data
+//if does not exist, creates it
 function InsertNewSheet(data, activeSpreadsheet, name) {
   var newSheet = activeSpreadsheet.getSheetByName(name);
     if (newSheet != null) {
