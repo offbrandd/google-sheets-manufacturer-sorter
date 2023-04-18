@@ -12,12 +12,6 @@ const deletableDellModels = ["Latitude 5580","Latitude 5590","Latitude 7480","La
 */
 var sheet1 = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Source");
 
-
-function trimAndPrune() { //calls trim and prune functions
-  trimColumns();
-  prune();
-}
-
 function trimColumns() { //iterates through header, calls isColumnDeletable() to check if column is necessary. If it isn't, delete
   var data=sheet1.getDataRange().getValues();
   var length = data[0].length;

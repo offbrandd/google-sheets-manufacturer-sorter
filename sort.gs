@@ -1,3 +1,8 @@
+  //pulls main sheet into an array, in this case "Source". Name of sheet MUST match in Google Sheets
+  var activeSpreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = activeSpreadsheet.getSheetByName("Source");
+  var data=sheet.getDataRange().getValues();
+  
   //define arrays for each MFG sheet
   var appleList = [];
   var dellList = [];
@@ -8,18 +13,25 @@
   var otherList = [];
 
   //define MFG sheets if not already made. If already exists, clears them.
-  var appleSheet = InsertNewSheet(data, activeSpreadsheet, "Apple");
-  var dellSheet = InsertNewSheet(data, activeSpreadsheet, "Dell");
-  var hpSheet = InsertNewSheet(data, activeSpreadsheet, "HP");
-  var lenovoSheet = InsertNewSheet(data, activeSpreadsheet, "Lenovo");
-  var microsoftSheet = InsertNewSheet(data, activeSpreadsheet, "Microsoft");
-  var acerSheet = InsertNewSheet(data, activeSpreadsheet, "Acer");
-  var otherSheet = InsertNewSheet(data, activeSpreadsheet, "Other");
+  var appleSheet;
+  var dellSheet;
+  var hpSheet;
+  var lenovoSheet;
+  var microsoftSheet;
+  var acerSheet;
+  var otherSheet;
 
-  //pulls main sheet into an array, in this case "Source". Name of sheet MUST match in Google Sheets
-  var activeSpreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-  var sheet = activeSpreadsheet.getSheetByName("Source");
-  var data=sheet.getDataRange().getValues();
+  function createMFGSheets() {
+    //define MFG sheets if not already made. If already exists, clears them.
+    appleSheet = InsertNewSheet(data, activeSpreadsheet, "Apple");
+    dellSheet = InsertNewSheet(data, activeSpreadsheet, "Dell");
+    hpSheet = InsertNewSheet(data, activeSpreadsheet, "HP");
+    lenovoSheet = InsertNewSheet(data, activeSpreadsheet, "Lenovo");
+    microsoftSheet = InsertNewSheet(data, activeSpreadsheet, "Microsoft");
+    acerSheet = InsertNewSheet(data, activeSpreadsheet, "Acer");
+    otherSheet = InsertNewSheet(data, activeSpreadsheet, "Other");
+  }
+
 
   //given a model name/number and a row of data, assign row of data to corresponding MFG array
   function addToList(name, row) {
