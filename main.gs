@@ -1,3 +1,5 @@
 function main() { //main
-  trimAndPrune();
+ trimColumns();
+  createMFGSheets();
+  prune();
 }
