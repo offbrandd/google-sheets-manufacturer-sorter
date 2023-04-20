@@ -1,7 +1,6 @@
   //pulls main sheet into an array, in this case "Source". Name of sheet MUST match in Google Sheets
   var activeSpreadsheet = SpreadsheetApp.getActiveSpreadsheet();
   var sheet = activeSpreadsheet.getSheetByName("Source");
-  var data=sheet.getDataRange().getValues();
   
   //define arrays for each MFG sheet
   var appleList = [];
@@ -23,6 +22,7 @@
 
   function createMFGSheets() {
     //define MFG sheets if not already made. If already exists, clears them.
+    var data=sheet.getDataRange().getValues();
     appleSheet = InsertNewSheet(data, activeSpreadsheet, "Apple");
     dellSheet = InsertNewSheet(data, activeSpreadsheet, "Dell");
     hpSheet = InsertNewSheet(data, activeSpreadsheet, "HP");
